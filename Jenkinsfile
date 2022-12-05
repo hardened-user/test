@@ -26,7 +26,7 @@ node ('docker') {
             }
         }
     } catch (e) {
-        sh "echo errorrr"
+        sh "echo errorrr: " + currentBuild.result
 
         throw e
     }
