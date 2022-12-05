@@ -14,6 +14,7 @@ pipeline {
             description: "inventory git repo",
             trim: true
         )
+    }
     // -----------------------------------------------------------------------------------------------------------------
     stage('S1') {
         docker.image(parameters.image).inside() {
