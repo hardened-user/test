@@ -1,30 +1,19 @@
 // -----------------------------------------------------------------------------------------------------------------
-//params.each { p ->
-//    env."${p.key}" = "${p.value}"
-//}
+def monctlDockerImage = 'hardeneduser/toolkit'
+def ansibleCredID = '0b2e42a9-725e-4335-80fb-c578969cd51f'
+def registryUrl = 'docker.io'
+def registryCredID = '*****'
 // -----------------------------------------------------------------------------------------------------------------
 properties([
     parameters([
         string(
-            name: 'image',
-            defaultValue: 'hardeneduser/toolkit',
-            description: "Docker image with Ansible",
-            trim: true
-        ),
-        string(
-            name: 'inventory_repo_udrl2',
+            name: 'inventory_repo_url',
             defaultValue: 'https://github.com/hardened-user/test',
             description: "Git repo with Ansible inventory",
             trim: true
         ),
         string(
             name: 'inventory_repo_branch',
-            defaultValue: 'main',
-            description: "",
-            trim: true
-        ),
-        string(
-            name: 'inventory_dir_name',
             defaultValue: 'main',
             description: "",
             trim: true
@@ -42,18 +31,18 @@ node ('docker') {
         doGenerateSubmoduleConfigurations: false,
         extensions: [[$class: 'CleanCheckout'], [$class: 'RelativeTargetDirectory', relativeTargetDir: "inventory"]],
         submoduleCfg: [],
-        userRemoteConfigs: [[url: params.inventory_repo_udrl2 ]] // credentialsId: <CRED_ID>
+        userRemoteConfigs: [[url: params.inventory_repo_url ]] // credentialsId: <CRED_ID>
     ])
     // -----------------------------------------------------------------------------------------------------------------
     stage ("RUN") {
         // Credentials type: Secret file
-        withCredentials([string(credentialsId: '197141e6-5e25-4866-9353-437f105d3fc1', variable: 'ANSIBLE_VAULT_SECRET')]) {
+        withCredentials([string(credentialsId: '0b2e42a9-725e-4335-80fb-c578969cd51f', variable: 'ANSIBLE_VAULT_SECRET')]) {
             // Credentials type: Username with password
-            //docker.withRegistry(<REGISTRY_URL>, <CRED_ID>) {
-                docker.image(params.image).inside("--tmpfs /ram:rw,noexec,nosuid,size=64k") {
+            //docker.withRegistry(<REGISTRY_URL>, dockerCredID) {
+                docker.image(monctlDockerImage).inside("--tmpfs /ram:rw,noexec,nosuid,size=64k") {
                     sh 'echo "${ANSIBLE_VAULT_SECRET}" > /ram/se'
                     sh "env; ls -lah inventory; echo ${env.BUILD_ID}, df -h"
-                    //sh "ansible-playbook -i inventory/${env.inventory_dir_name}/inventory.yaml --vault-password-file vault.txt --diff local.yaml $@"
+                    //sh "ansible-playbook -i inventory/inventory.yaml --vault-password-file vault.txt --diff local.yaml $@"
                 }
             //}
         }
