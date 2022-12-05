@@ -12,7 +12,7 @@ properties([
             trim: true
         ),
         string(
-            name: 'inventory_repo_url',
+            name: 'inventory_repo_udrl2',
             defaultValue: 'https://github.com/hardened-user/test',
             description: "Git repo with Ansible inventory",
             trim: true
@@ -42,7 +42,7 @@ node ('docker') {
         doGenerateSubmoduleConfigurations: false,
         extensions: [[$class: 'CleanCheckout'], [$class: 'RelativeTargetDirectory', relativeTargetDir: "inventory"]],
         submoduleCfg: [],
-        userRemoteConfigs: [[url: params.inventory_repo_url ]] // credentialsId: <CRED_ID>
+        userRemoteConfigs: [[url: params.inventory_repo_udrl2 ]] // credentialsId: <CRED_ID>
     ])
     // -----------------------------------------------------------------------------------------------------------------
     stage ("RUN") {
