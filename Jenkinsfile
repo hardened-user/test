@@ -37,8 +37,8 @@ node ('docker') {
             // Credentials type: Username with password
             //docker.withRegistry(<REGISTRY_URL>, dockerCredID) {
                 docker.image(monctlDockerImage).inside("--tmpfs /ram:rw,noexec,nosuid,size=64k") {
-                    sh 'echo "${ANSIBLE_VAULT_SECRET}" > /ram/secret'
-                    sh "env; ls -lah inventory; echo ${env.BUILD_ID}; df -h"
+                    sh 'echo "${ANSIBLE_VAULT_SECRET}" > /tmpfs/secret'
+                    sh "env; ls -lah inventory; echo ${env.BUILD_ID}; df -h; cat /tmpfs/secret"
                     //sh "ansible-playbook -i inventory/inventory.yaml --vault-password-file /ram/secret --diff local.yaml $@"
                 }
             //}
