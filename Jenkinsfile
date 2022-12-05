@@ -1,9 +1,9 @@
-// -----------------------------------------------------------------------------------------------------------------
+// ---------------------------------------------------------------------------------------------------------------------
 def monctlDockerImage = 'hardeneduser/toolkit'
 def ansibleCredID = '0b2e42a9-725e-4335-80fb-c578969cd51f'
 def registryUrl = 'docker.io'
 def registryCredID = '*****'
-// -----------------------------------------------------------------------------------------------------------------
+// ---------------------------------------------------------------------------------------------------------------------
 properties([
     parameters([
         string(
@@ -20,18 +20,15 @@ properties([
         )
     ])
 ])
-
+// ---------------------------------------------------------------------------------------------------------------------
 node ('docker') {
-    // checkout current
-    //checkout scm
-    // checkout inventory
     checkout([
         $class: 'GitSCM',
         branches: [[name: '*/' + params.inventory_repo_branch]],
         doGenerateSubmoduleConfigurations: false,
         extensions: [[$class: 'CleanCheckout'], [$class: 'RelativeTargetDirectory', relativeTargetDir: "inventory"]],
         submoduleCfg: [],
-        userRemoteConfigs: [[url: params.inventory_repo_url ]] // credentialsId: <CRED_ID>
+        userRemoteConfigs: [[url: params.inventory_repo_url ]] // credentialsId: ansibleCredID
     ])
     // -----------------------------------------------------------------------------------------------------------------
     stage ("RUN") {
