@@ -48,7 +48,7 @@ node ('docker') {
             //docker.withRegistry(<REGISTRY_URL>, <CRED_ID>) {
                 docker.image(params.image).inside() {
                     sh "env; ls -lah inventory;"
-                    sh "ansible-playbook -i inventory/${params.inventory_dir_name}/inventory.yaml --vault-password-file vault.txt --diff local.yaml $@"
+                    sh "ansible-playbook -i inventory/${env.inventory_dir_name}/inventory.yaml --vault-password-file vault.txt --diff local.yaml $@"
                 }
             //}
         }
