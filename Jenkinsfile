@@ -34,7 +34,7 @@ node ('docker') {
     // checkout inventory
     checkout([
         $class: 'GitSCM',
-        branches: [[name: '*/' + inventory_repo_branch]],
+        branches: [[name: '*/' + params.inventory_repo_branch]],
         doGenerateSubmoduleConfigurations: false,
         extensions: [[$class: 'CleanCheckout'], [$class: 'RelativeTargetDirectory', relativeTargetDir: "inventory"]],
         submoduleCfg: [],
