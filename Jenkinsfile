@@ -1,5 +1,6 @@
 //
 pipeline {
+    agent any
     // -----------------------------------------------------------------------------------------------------------------
     parameters {
         string(
@@ -16,10 +17,12 @@ pipeline {
         )
     }
     // -----------------------------------------------------------------------------------------------------------------
-    stage('S1') {
-        steps {
-            docker.image(parameters.image).inside() {
-                sh "env"
+    stages{
+        stage('S1') {
+            steps {
+                docker.image(parameters.image).inside() {
+                    sh "env"
+                }
             }
         }
     }
