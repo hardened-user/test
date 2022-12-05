@@ -1,14 +1,19 @@
 // ---------------------------------------------------------------------------------------------------------------------
 def monctlDockerImage = 'hardeneduser/toolkit'
-def ansibleCredID = '0b2e42a9-725e-4335-80fb-c578969cd51f'
-def inventoryRepoUrl = 'https://github.com/hardened-user/test'
+def registryUrl = 'local.regestry'
+def registryCredID = '*****'
 def inventoryRepoBranch = 'main'
 def inventoryCredID = '*****'
-def registryUrl = 'docker.io'
-def registryCredID = '*****'
+def ansibleCredID = '0b2e42a9-725e-4335-80fb-c578969cd51f'
 // ---------------------------------------------------------------------------------------------------------------------
 properties([
     parameters([
+        string(
+            name: 'inventoryRepoUrl',
+            defaultValue: 'https://github.com/hardened-user/test',
+            description: "Inventory repository",
+            trim: true
+        ),
         string(
             name: 'ansibleLimit',
             defaultValue: '',
@@ -30,18 +35,17 @@ node ('docker') {
         doGenerateSubmoduleConfigurations: false,
         extensions: [[$class: 'CleanCheckout'], [$class: 'RelativeTargetDirectory', relativeTargetDir: "inventory"]],
         submoduleCfg: [],
-        userRemoteConfigs: [[url: inventoryRepoUrl]] // credentialsId: inventoryCredID
+        userRemoteConfigs: [[url: params.inventoryRepoUrl ]] // credentialsId: inventoryCredID
     ])
     // -----------------------------------------------------------------------------------------------------------------
-    stage ("RUN") {
+    stage ("Run") {
         // Credentials type: Secret text
-        withCredentials([string(credentialsId: '0b2e42a9-725e-4335-80fb-c578969cd51f', variable: 'ANSIBLE_VAULT_SECRET')]) {
+        withCredentials([string(credentialsId: ansibleCredID, variable: 'VAULT_SECRET')]) {
             // Credentials type: Username with password
-            //docker.withRegistry(<REGISTRY_URL>, dockerCredID) {
-                docker.image(monctlDockerImage).inside("--tmpfs /tmpfs:rw,noexec,nosuid,size=64k") {
-                    sh 'echo "${ANSIBLE_VAULT_SECRET}" > /tmpfs/secret'
-                    sh "env; ls -lah inventory; echo ${params.ANSIBLE_LIMIT}; df -h; cat /tmpfs/secret"
-
+            //docker.withRegistry(registryUrl, registryCredID) {
+                docker.image(monctlDockerImage).inside("--tmpfs /tmpfs:rw,size=64k") {
+                    sh 'echo "\${VAULT_SECRET}" > /tmpfs/secret'
+                    //
                     EXEC_CMD = 'ansible-playbook -i inventory/inventory.yaml --vault-password-file /tmpfs/secret playbook.yaml'
                     if (params.ansibleLimit) {
                         EXEC_CMD += " --limit '${params.ansibleLimit}'"
