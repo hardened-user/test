@@ -1,7 +1,7 @@
 
 node {
 
-
+    properties([
         parameters([
             booleanParam(
                 name: 'publishEnabled',
@@ -15,7 +15,7 @@ node {
             ),
             choice(
                 name: 'deployTo',
-                choices: "smvp\nnonexistent",
+                choices: "rtdms-msk-mvp\nnonexistent",
                 description: ""
             )
         ])
