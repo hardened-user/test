@@ -22,7 +22,7 @@ node ('docker') {
         // -----------------------------------------------------------------------------------------------------------------
         stage ("RUN") {
             docker.image(params.image).inside("") {
-                sh "env; ls -lah"
+                sh "env; ls -lah; exit 1"
             }
         }
     } catch (e) {
