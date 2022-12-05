@@ -1,4 +1,6 @@
 
+node {
+
     properties([
         buildDiscarder(
             logRotator(
@@ -28,7 +30,6 @@
         ])
     ])
 
-node {
     stage('S1') {
         if (env.BRANCH_NAME == 'master') {
             echo 'I only execute on the master branch'
