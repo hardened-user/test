@@ -1,0 +1,4 @@
+---
+kubernetes:
+  hosts:
+    localhost:
