@@ -49,7 +49,7 @@ node ('docker') {
                     if (params.diffEnabled) {
                         EXEC_CMD += " --diff"
                     }
-                    sh ${EXEC_CMD}
+                    sh "${EXEC_CMD}"
                 }
             //}
         }
