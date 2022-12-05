@@ -47,11 +47,12 @@ node ('docker') {
     // -----------------------------------------------------------------------------------------------------------------
     stage ("RUN") {
         // Credentials type: Secret file
-        withCredentials([file(credentialsId: '197141e6-5e25-4866-9353-437f105d3fc1', variable: 'vault.txt')]) {
+        withCredentials([string(credentialsId: '197141e6-5e25-4866-9353-437f105d3fc1', variable: 'ANSIBLE_VAULT_SECRET')]) {
             // Credentials type: Username with password
             //docker.withRegistry(<REGISTRY_URL>, <CRED_ID>) {
-                docker.image(params.image).inside() {
-                    sh "env; ls -lah inventory; echo ${env.BUILD_ID}"
+                docker.image(params.image).inside("--tmpfs /ram:rw,noexec,nosuid,size=64k") {
+                    sh 'echo "${ANSIBLE_VAULT_SECRET}" > /ram/se'
+                    sh "env; ls -lah inventory; echo ${env.BUILD_ID}, df -h"
                     //sh "ansible-playbook -i inventory/${env.inventory_dir_name}/inventory.yaml --vault-password-file vault.txt --diff local.yaml $@"
                 }
             //}
