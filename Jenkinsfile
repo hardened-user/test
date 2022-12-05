@@ -1,6 +1,4 @@
 
-node {
-
     properties([
         parameters([
             booleanParam(
@@ -15,11 +13,13 @@ node {
             ),
             choice(
                 name: 'deployTo',
-                choices: "rtdms-msk-mvp\nnonexistent",
+                choices: "mvp\nnonexistent",
                 description: ""
             )
         ])
     ])
+node {
+
 
     stage('S1') {
         if (env.BRANCH_NAME == 'master') {
