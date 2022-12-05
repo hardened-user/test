@@ -29,7 +29,7 @@ pipeline {
             defaultValue: 'hardeneduser/toolkit',
             description: "docker image",
             trim: true
-        ),
+        )
         string(
             name: 'inventory',
             defaultValue: 'https://github.com/hardened-user/test',
