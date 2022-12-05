@@ -17,8 +17,10 @@ pipeline {
     }
     // -----------------------------------------------------------------------------------------------------------------
     stage('S1') {
-        docker.image(parameters.image).inside() {
-            sh "env"
+        steps {
+            docker.image(parameters.image).inside() {
+                sh "env"
+            }
         }
     }
 }
