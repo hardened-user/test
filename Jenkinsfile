@@ -27,15 +27,7 @@ node ('docker') {
         }
     } catch (e) {
         sh "echo errorrr"
-        if (currentBuild.rawBuild.getActions(jenkins.model.InterruptedBuildAction.class).isEmpty()) {
-            currentBuild.result = "FAILED"
-            /*
-                actions on fail
-            */
-        } else {
-            // org.jenkinsci.plugins.workflow.steps.FlowInterruptedException
-            currentBuild.result = "ABORTED"
-        }
+
         throw e
     }
 }
