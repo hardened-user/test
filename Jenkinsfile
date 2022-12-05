@@ -22,19 +22,12 @@ node ('docker') {
         // -----------------------------------------------------------------------------------------------------------------
         stage ("RUN") {
             docker.image(params.image).inside("") {
-                sh "env; ls -lah; exit 1"
+                sh "env; ls -lah"
             }
         }
     } catch (e) {
-        if (currentBuild.rawBuild.getActions(jenkins.model.InterruptedBuildAction.class).isEmpty()) {
-            currentBuild.result = "FAILED"
-            /*
-                actions on fail
-            */
-        } else {
-            // org.jenkinsci.plugins.workflow.steps.FlowInterruptedException
-            currentBuild.result = "ABORTED"
-        }
+        sh "echo errorrr"
+
         throw e
     }
 }
