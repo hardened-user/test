@@ -17,12 +17,24 @@ properties([
 ])
 
 node ('docker') {
-
-    // -----------------------------------------------------------------------------------------------------------------
-    stage ("RUN") {
-        checkout scm
-        docker.image(params.image).inside("") {
-            sh "env; ls -lah"
+    try {
+    checkout scm
+        // -----------------------------------------------------------------------------------------------------------------
+        stage ("RUN") {
+            docker.image(params.image).inside("") {
+                sh "env; ls -lah"
+            }
         }
+    } catch (e) {
+        if (currentBuild.rawBuild.getActions(jenkins.model.InterruptedBuildAction.class).isEmpty()) {
+            currentBuild.result = "FAILED"
+            /*
+                actions on fail
+            */
+        } else {
+            // org.jenkinsci.plugins.workflow.steps.FlowInterruptedException
+            currentBuild.result = "ABORTED"
+        }
+        throw e
     }
 }
