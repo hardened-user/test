@@ -1,4 +1,7 @@
 //
+
+
+node {
 properties([
     parameters([
         string(
@@ -15,9 +18,6 @@ properties([
         )
     ])
 ])
-
-node {
-
     // -----------------------------------------------------------------------------------------------------------------
     stage ("RUN") {
         docker.image(parameters.image).inside() {
