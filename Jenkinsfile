@@ -18,7 +18,7 @@ properties([
 
 node ('docker') {
     // checkout current
-    // need it? checkout scm
+    //checkout scm
     // checkout inventory
     checkout([
         $class: 'GitSCM',
@@ -26,12 +26,14 @@ node ('docker') {
         doGenerateSubmoduleConfigurations: false,
         extensions: [[$class: 'CleanCheckout'], [$class: 'RelativeTargetDirectory', relativeTargetDir: "inventory"]],
         submoduleCfg: [],
-        userRemoteConfigs: [[url: params.inventory ]]
+        userRemoteConfigs: [[url: params.inventory ]] // credentialsId: <CRED_ID>
     ])
     // -----------------------------------------------------------------------------------------------------------------
     stage ("RUN") {
-        docker.image(params.image).inside() {
-            sh "env; ls -lah; exit 1"
-        }
+        //docker.withRegistry(<REGISTRY_URL>, <CRED_ID>) {
+            docker.image(params.image).inside() {
+                sh "env; ls -lah; find ./"
+            }
+        //}
     }
 }
