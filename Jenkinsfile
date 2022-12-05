@@ -18,7 +18,7 @@ properties([
             trim: true
         ),
         string(
-            name: 'inventory_repo_branch2',
+            name: 'inventory_repo_branch22',
             defaultValue: 'main',
             description: "",
             trim: true
@@ -38,7 +38,7 @@ node ('docker') {
     // checkout inventory
     checkout([
         $class: 'GitSCM',
-        branches: [[name: '*/' + params.inventory_repo_branch2]],
+        branches: [[name: '*/' + params.inventory_repo_branch22]],
         doGenerateSubmoduleConfigurations: false,
         extensions: [[$class: 'CleanCheckout'], [$class: 'RelativeTargetDirectory', relativeTargetDir: "inventory"]],
         submoduleCfg: [],
