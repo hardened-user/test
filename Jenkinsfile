@@ -1,11 +1,8 @@
 //
-
-
-node {
 properties([
     parameters([
         string(
-            name: 'img',
+            name: 'image',
             defaultValue: 'hardeneduser/toolkit',
             description: "docker image",
             trim: true
@@ -18,6 +15,9 @@ properties([
         )
     ])
 ])
+
+node {
+
     // -----------------------------------------------------------------------------------------------------------------
     stage ("RUN") {
         docker.image(parameters.image).inside() {
