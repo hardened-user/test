@@ -44,6 +44,7 @@ node ('docker') {
             // Credentials type: Username with password
             //docker.withRegistry(registryUrl, registryCredID) {
                 docker.image(monctlDockerImage).inside("--tmpfs /tmpfs:rw,size=64k") {
+                    sh '''echo \$HOME \\\$VAULT_SECRET''' > /tmpfs/secret'
                     sh 'echo "\${VAULT_SECRET}" > /tmpfs/secret'
                     //
                     EXEC_CMD = 'ansible-playbook -i inventory/inventory.yaml --vault-password-file /tmpfs/secret playbook.yaml'
