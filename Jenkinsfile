@@ -39,8 +39,9 @@ node ('docker') {
             // Credentials type: Username with password
             //docker.withRegistry(<REGISTRY_URL>, dockerCredID) {
                 docker.image(monctlDockerImage).inside("--tmpfs /tmpfs:rw,noexec,nosuid,size=64k") {
-                    sh "env; ls -lah inventory; echo ${params.ANSIBLE_LIMIT}; df -h; cat /tmpfs/secret"
                     sh 'echo "${ANSIBLE_VAULT_SECRET}" > /tmpfs/secret'
+                    sh "env; ls -lah inventory; echo ${params.ANSIBLE_LIMIT}; df -h; cat /tmpfs/secret"
+
                     EXEC_CMD = 'ansible-playbook -i inventory/inventory.yaml --vault-password-file /tmpfs/secret playbook.yaml'
                     if (params.ansibleLimit) {
                         EXEC_CMD += " --limit '${params.ansibleLimit}'"
