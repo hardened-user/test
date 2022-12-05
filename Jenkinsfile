@@ -44,6 +44,7 @@ node ('docker') {
             // Credentials type: Username with password
             //docker.withRegistry(registryUrl, registryCredID) {
                 docker.image(monctlDockerImage).inside("--tmpfs /tmpfs:rw,size=64k") {
+                    sh '''env'''
                     sh '''echo $HOME \$HOME \\\$HOME \\\$VAULT_SECRET'''
                     sh 'echo "\${VAULT_SECRET}" > /tmpfs/secret'
                     //
