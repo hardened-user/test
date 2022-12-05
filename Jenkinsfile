@@ -47,7 +47,7 @@ node ('docker') {
             // Credentials type: Username with password
             //docker.withRegistry(<REGISTRY_URL>, <CRED_ID>) {
                 docker.image(params.image).inside() {
-                    sh "env; ls -lah inventory;"
+                    sh "env; ls -lah inventory; echo ${env.BUILD_ID}"
                     sh "ansible-playbook -i inventory/${env.inventory_dir_name}/inventory.yaml --vault-password-file vault.txt --diff local.yaml $@"
                 }
             //}
