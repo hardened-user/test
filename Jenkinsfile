@@ -35,7 +35,7 @@ node ('docker') {
             //docker.withRegistry(<REGISTRY_URL>, dockerCredID) {
                 docker.image(monctlDockerImage).inside("--tmpfs /tmpfs:rw,noexec,nosuid,size=64k") {
                     sh 'echo "${ANSIBLE_VAULT_SECRET}" > /tmpfs/secret'
-                    sh "echo ansible-playbook -i inventory/inventory.yaml --vault-password-file /tmpfs/secret --limit ${ENV.ANSIBLE_LIMIT} --diff local.yaml $@"
+                    sh 'echo ansible-playbook -i inventory/inventory.yaml --vault-password-file /tmpfs/secret --limit "${ANSIBLE_LIMIT}" --diff local.yaml $@'
                     sh "env; ls -lah inventory; echo ${env.BUILD_ID}; df -h; cat /tmpfs/secret"
                 }
             //}
