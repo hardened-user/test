@@ -20,7 +20,7 @@ node {
 
     // -----------------------------------------------------------------------------------------------------------------
     stage ("RUN") {
-        docker.image(parameters.image).inside() {
+        docker.image(params.image).inside("") {
             sh "env"
         }
     }
