@@ -10,7 +10,7 @@ node {
             ),
             booleanParam(
                 name: 'deployEnabled',
-                defaultValue: getEnvDEPLOY(),
+                defaultValue: "",
                 description: ""
             ),
             choice(
