@@ -1,16 +1,7 @@
 
 node {
 
-    properties([
-        buildDiscarder(
-            logRotator(
-                    artifactDaysToKeepStr: '',
-                    artifactNumToKeepStr: '',
-                    daysToKeepStr: '',
-                    numToKeepStr: '5'
-             )
-        ),
-        gitLabConnection('git.bss.ural.mts.ru'),
+
         parameters([
             booleanParam(
                 name: 'publishEnabled',
@@ -24,7 +15,7 @@ node {
             ),
             choice(
                 name: 'deployTo',
-                choices: "rtdms-msk-mvp\nnonexistent",
+                choices: "smvp\nnonexistent",
                 description: ""
             )
         ])
