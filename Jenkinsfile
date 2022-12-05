@@ -1,7 +1,7 @@
 // -----------------------------------------------------------------------------------------------------------------
-params.each { p ->
-    env."${p.key}" = "${p.value}"
-}
+//params.each { p ->
+//    env."${p.key}" = "${p.value}"
+//}
 // -----------------------------------------------------------------------------------------------------------------
 properties([
     parameters([
@@ -18,7 +18,7 @@ properties([
             trim: true
         ),
         string(
-            name: 'inventory_repo_branch22',
+            name: 'inventory_repo_branch',
             defaultValue: 'main',
             description: "",
             trim: true
@@ -38,7 +38,7 @@ node ('docker') {
     // checkout inventory
     checkout([
         $class: 'GitSCM',
-        branches: [[name: '*/' + params.inventory_repo_branch22]],
+        branches: [[name: '*/' + params.inventory_repo_branch]],
         doGenerateSubmoduleConfigurations: false,
         extensions: [[$class: 'CleanCheckout'], [$class: 'RelativeTargetDirectory', relativeTargetDir: "inventory"]],
         submoduleCfg: [],
