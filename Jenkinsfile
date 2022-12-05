@@ -20,6 +20,7 @@ node ('docker') {
 
     // -----------------------------------------------------------------------------------------------------------------
     stage ("RUN") {
+        checkout scm
         docker.image(params.image).inside("") {
             sh "env; ls -lah"
         }
